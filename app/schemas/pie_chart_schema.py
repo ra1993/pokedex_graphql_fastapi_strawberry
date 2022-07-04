@@ -1,14 +1,11 @@
 import strawberry
-from typing import List
-    
+from typing import List, Union
 
 @strawberry.type
-class ChartInfo:
-    pokemon_name: None or str #Union[str, None]
-
-
+class Num_Points:
+    points: Union[int, None]
 
 @strawberry.type
-class Generation:
-    generation_name: None or str # Union[str, None]
-    chart_data: List[ChartInfo]
+class GenPieChart:
+    generation:Union[str, None]
+    chart_data: List[Num_Points]
