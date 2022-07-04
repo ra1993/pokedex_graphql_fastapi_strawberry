@@ -31,22 +31,23 @@ class poke_data_transform:
                 generation_names.append(gen_names_dict[gen_num])
         self.poke_df['gen_name'] = generation_names
 
-        def add_points(self, column_name):
-            points_column=[]
-            for row in self.poke_df.iterrows():
-                target_column=row[column_name]
-                if not pd.isna(target_column):
-                    points_column.append(1)
-                else:
-                    points_column.append(0)
-            self.poke_df[f'{column_name}points'] = points_column
+    def add_points(self, column_name):
+        points_column=[]
+        for row in self.poke_df.iterrows():
+            row_data=row[1]
+            target_column=row_data[column_name]
+            if not pd.isna(target_column):
+                points_column.append(1)
+            else:
+                points_column.append(0)
+        self.poke_df[f'{column_name}_points'] = points_column
     
         def agg_num_pokemon_region():
             pass
 
-        def groupby_column(self, column_name):
-            
-            pass
+    def groupby_column(self, group_column_name, sum_column_name):
+        grouped_df = self.poke_df.groupby([group_column_name])[sum_column_name].sum().reset_index()
+        return grouped_df
 
 def process_pie_chart():
     pass
@@ -97,8 +98,11 @@ def process_pokedex() -> Generation:
 poke_df_obj=poke_data_transform('pokemon.csv')
 poke_df_obj.set_region_name()
 poke_df_obj.add_points('gen_name')
+generation_groupby=poke_df_obj.groupby_column('gen_name', 'gen_name_points')
+# print(generation_groupby)
+# print(poke_df_obj.poke_df)
 # print(process_pokedex())
-print(type(process_pokedex()))
+# print(type(process_pokedex()))
 
 if __name__ == "__main__":
     poke_df_obj=poke_data_transform('pokemon.csv')
