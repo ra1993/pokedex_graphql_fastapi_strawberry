@@ -1,19 +1,12 @@
 import strawberry
 from app.transform_data import process_pokedex
 from app.schemas.poke_schema import Generation
-from app.schemas.pie_chart_schema import GenPieChart, Num_Points
+from app.schemas.pie_chart_schema import GenPieChart, Num_Pokemon
 from app.transform_data import generation_groupby
-
-# @strawberry.type
-# class Query:
-#     @strawberry.field
-#     def hello_world(self)-> str:
-#         return "Hello world"
 
 @strawberry.type
 class Query:
     PokeDex: Generation = strawberry.field(resolver=process_pokedex)
-
 
 def get_pie_chart_data()-> GenPieChart:
     pie_chart_data=[]
@@ -21,24 +14,24 @@ def get_pie_chart_data()-> GenPieChart:
     for idx, row in generation_groupby.iterrows():
         gen_name=row['gen_name']
         points=row['gen_name_points']
-        pie_chart_data.append(Num_Points(points=points))
+        # print(points,"<><><><<<<<<<<<<<<<<<<<<<<,")
+        pie_chart_data.append(Num_Pokemon(pokemon_number=points))
         
-        new_data = GenPieChart(
-        generation=gen_name,
-        chart_data=pie_chart_data
-        )
         gen_pie.append(
             GenPieChart(
         generation=gen_name,
-        chart_data=pie_chart_data
+        chart_data=Num_Pokemon(pokemon_number = points)
         )
         )
-        return (
-        GenPieChart(
+    # return (gen_pie)
+    return (
+    GenPieChart(
         generation=gen_name,
         chart_data=pie_chart_data
         )
-    )
+)
+# print(get_pie_chart_data())
+# print(type(get_pie_chart_data()))
 
 @strawberry.type
 class Query2:

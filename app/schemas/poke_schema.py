@@ -10,7 +10,6 @@ class PokeStats:
     sp_attack:None or int or float #Union[float, None]
     sp_defense: None or int or float #Union[float, None]
     speed:None or int or float #Union[float, None]
-    
 
 @strawberry.type
 class Pokemon:
